@@ -8,7 +8,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const { t } = useI18n()
-const { toggle, update, remove } = useTodos()
+const { toggle, update, remove, searchQuery } = useTodos()
 const { format } = useDateLabel()
 const log = useLogger('TodoItem')
 
@@ -134,20 +134,24 @@ async function onDelete() {
       <div class="item__body">
         <div class="item__head">
           <PriorityBadge :priority="todo.priority" />
-          <span class="item__title">{{ todo.title }}</span>
+          <span class="item__title">
+            <HighlightText :text="todo.title" :query="searchQuery" />
+          </span>
         </div>
 
         <p v-if="todo.description" class="item__description">
-          {{ todo.description }}
+          <HighlightText :text="todo.description" :query="searchQuery" />
         </p>
 
         <div v-if="todo.category || todo.tags.length || dueLabel" class="item__meta">
-          <span v-if="todo.category" class="item__category">{{ todo.category }}</span>
+          <span v-if="todo.category" class="item__category">
+            <HighlightText :text="todo.category" :query="searchQuery" />
+          </span>
           <span
             v-for="tag in todo.tags"
             :key="tag"
             class="item__tag"
-          >#{{ tag }}</span>
+          >#<HighlightText :text="tag" :query="searchQuery" /></span>
           <span
             v-if="dueLabel"
             class="item__due"

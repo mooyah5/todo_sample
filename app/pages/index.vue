@@ -15,6 +15,7 @@ useHead({ title: () => t('app.title') })
       <AppHeader />
       <main class="page__main">
         <TodoForm />
+        <SearchBar />
         <TodoFilter />
         <TodoList />
       </main>

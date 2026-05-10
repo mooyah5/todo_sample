@@ -29,7 +29,7 @@ export function useTodos() {
   const reorderMutation = useReorderTodosMutation()
 
   const ui = useTodoUiStore()
-  const { filter, selectedCategory } = storeToRefs(ui)
+  const { filter, selectedCategory, searchQuery } = storeToRefs(ui)
 
   // --- derived state -----------------------------------------------------
   const todos = computed<Todo[]>(() => query.data.value ?? [])
@@ -55,20 +55,27 @@ export function useTodos() {
 
   // 사용자 정렬 우선 — 드래그로 잡은 order 값에 따름.
   // 동일 order 시 createdAt 으로 안정 정렬.
-  const visibleTodos = computed<Todo[]>(() =>
-    todos.value
+  const visibleTodos = computed<Todo[]>(() => {
+    const q = searchQuery.value.trim().toLowerCase()
+    return todos.value
       .filter((t) => {
         if (filter.value === 'active' && t.status !== 'todo') return false
         if (filter.value === 'done' && t.status !== 'done') return false
         if (selectedCategory.value && t.category !== selectedCategory.value) return false
+        if (q) {
+          const haystack = [t.title, t.description, t.category, ...t.tags]
+            .join(' ')
+            .toLowerCase()
+          if (!haystack.includes(q)) return false
+        }
         return true
       })
       .slice()
       .sort((a, b) => {
         if (a.order !== b.order) return a.order - b.order
         return a.createdAt.localeCompare(b.createdAt)
-      }),
-  )
+      })
+  })
 
   const activeCount = computed(() => todos.value.filter((t) => t.status === 'todo').length)
   const doneCount = computed(() => todos.value.filter((t) => t.status === 'done').length)
@@ -140,6 +147,7 @@ export function useTodos() {
     categories,
     filter,
     selectedCategory,
+    searchQuery,
     activeCount,
     doneCount,
     isLoading,
@@ -153,6 +161,7 @@ export function useTodos() {
     reorder,
     setFilter: ui.setFilter,
     setCategory: ui.setCategory,
+    setSearch: ui.setSearch,
     // SSR 친화: page 에서 await suspense() 로 초기 fetch 대기
     suspense: query.suspense,
   }

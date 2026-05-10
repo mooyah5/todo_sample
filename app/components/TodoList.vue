@@ -4,9 +4,10 @@ import type { Todo } from '#shared/types/todo'
 import { useTodos } from '~/composables/useTodos'
 
 const { t } = useI18n()
-const { visibleTodos, isLoading, filter, error, reorder } = useTodos()
+const { visibleTodos, isLoading, filter, error, reorder, searchQuery } = useTodos()
 
 const emptyMessage = computed(() => {
+  if (searchQuery.value.trim()) return t('list.empty.search', { q: searchQuery.value.trim() })
   if (filter.value === 'active') return t('list.empty.active')
   if (filter.value === 'done') return t('list.empty.done')
   return t('list.empty.all')

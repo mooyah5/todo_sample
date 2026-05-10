@@ -52,8 +52,14 @@
     "empty": {
       "all": "No todos yet. Add one above to get started.",
       "active": "Nothing in progress. Take a breather.",
-      "done": "Nothing finished yet."
+      "done": "Nothing finished yet.",
+      "search": "No results for ‘{q}’."
     }
+  },
+  "search": {
+    "label": "Search todos",
+    "placeholder": "Search title, note, category, tag",
+    "clear": "Clear"
   },
   "item": {
     "toggle": "Toggle completion",
