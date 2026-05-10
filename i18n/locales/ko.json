@@ -38,6 +38,8 @@
     },
     "submit": "추가",
     "submitting": "추가 중...",
+    "expand": "자세히",
+    "collapse": "간단히",
     "validation": {
       "titleRequired": "제목을 입력해주세요"
     }

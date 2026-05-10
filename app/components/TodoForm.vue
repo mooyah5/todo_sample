@@ -86,7 +86,7 @@ async function submit() {
           type="button"
           class="form__btn form__btn--ghost"
           :aria-expanded="form.expanded"
-          :aria-label="form.expanded ? '간단히' : '자세히'"
+          :aria-label="form.expanded ? t('form.collapse') : t('form.expand')"
           @click="form.expanded = !form.expanded"
         >
           <svg

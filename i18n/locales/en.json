@@ -38,6 +38,8 @@
     },
     "submit": "Add",
     "submitting": "Adding...",
+    "expand": "More",
+    "collapse": "Less",
     "validation": {
       "titleRequired": "Please enter a title"
     }
