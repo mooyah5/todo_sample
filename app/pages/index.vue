@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { useTodoStore } from '~/stores/todo'
+import { useTodos } from '~/composables/useTodos'
 
 const { t } = useI18n()
-const store = useTodoStore()
+const { suspense } = useTodos()
 
-// SSR 시점에 미리 로드 (HMR 시에도 한 번 더 호출되지만 멱등)
-await useAsyncData('todos:initial', async () => {
-  await store.fetchAll()
-  return true
-})
+// SSR 시점에 초기 fetch 대기 — TanStack Query 의 hydrate 로 클라이언트에 그대로 이관됨
+await suspense()
 
 useHead({ title: () => t('app.title') })
 </script>
