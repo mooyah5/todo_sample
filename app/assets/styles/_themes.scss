@@ -1,0 +1,77 @@
+// =============================================================================
+// Theme: light / dark CSS variables
+// data-theme 속성으로 토글 — `useTheme` composable 이 <html> 에 attr 부여
+// =============================================================================
+
+:root,
+[data-theme='light'] {
+  // surface
+  --color-bg:           #f7f8fa;
+  --color-surface:      #ffffff;
+  --color-surface-alt:  #f1f3f6;
+  --color-surface-hover: #eef0f4;
+  --color-border:       #e2e5ea;
+  --color-border-strong: #c8cdd4;
+
+  // text
+  --color-text:         #14181f;
+  --color-text-muted:   #5b6472;
+  --color-text-subtle:  #8a93a1;
+  --color-text-on-accent: #ffffff;
+
+  // brand
+  --color-accent:       #4f46e5;
+  --color-accent-hover: #4338ca;
+  --color-accent-soft:  #eef2ff;
+
+  // semantic
+  --color-success:      #10b981;
+  --color-warning:      #f59e0b;
+  --color-danger:       #ef4444;
+  --color-info:         #3b82f6;
+
+  // priority
+  --color-priority-low:    #94a3b8;
+  --color-priority-medium: #f59e0b;
+  --color-priority-high:   #ef4444;
+
+  // shadows
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --color-bg:           #0b0e14;
+  --color-surface:      #141925;
+  --color-surface-alt:  #1b2230;
+  --color-surface-hover: #232b3b;
+  --color-border:       #2a3245;
+  --color-border-strong: #3a4359;
+
+  --color-text:         #e7eaf0;
+  --color-text-muted:   #a3acba;
+  --color-text-subtle:  #6c7689;
+  --color-text-on-accent: #ffffff;
+
+  --color-accent:       #818cf8;
+  --color-accent-hover: #a5b4fc;
+  --color-accent-soft:  #1e1f3d;
+
+  --color-success:      #34d399;
+  --color-warning:      #fbbf24;
+  --color-danger:       #f87171;
+  --color-info:         #60a5fa;
+
+  --color-priority-low:    #64748b;
+  --color-priority-medium: #fbbf24;
+  --color-priority-high:   #f87171;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
+}

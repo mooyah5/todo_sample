@@ -1,0 +1,78 @@
+// =============================================================================
+// Design Tokens
+// 정적 SCSS 변수 — 빌드 타임에 결정되는 값 (브레이크포인트, 타이포 스케일 등)
+// 동적으로 바뀌는 값(색상)은 _themes.scss 의 CSS 변수로 관리
+// =============================================================================
+
+// --- Breakpoints ---------------------------------------------------------
+$bp-mobile: 480px;
+$bp-tablet: 768px;
+$bp-desktop: 1024px;
+$bp-wide: 1280px;
+
+// --- Spacing (4px scale) -------------------------------------------------
+$space-0: 0;
+$space-1: 0.25rem; // 4
+$space-2: 0.5rem;  // 8
+$space-3: 0.75rem; // 12
+$space-4: 1rem;    // 16
+$space-5: 1.5rem;  // 24
+$space-6: 2rem;    // 32
+$space-7: 3rem;    // 48
+$space-8: 4rem;    // 64
+
+// --- Radius --------------------------------------------------------------
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 14px;
+$radius-xl: 20px;
+$radius-pill: 999px;
+
+// --- Typography ----------------------------------------------------------
+$font-family-base:
+  'Pretendard',
+  -apple-system,
+  BlinkMacSystemFont,
+  'Apple SD Gothic Neo',
+  'Noto Sans KR',
+  'Segoe UI',
+  Roboto,
+  sans-serif;
+
+$font-family-mono:
+  'JetBrains Mono',
+  'D2Coding',
+  ui-monospace,
+  SFMono-Regular,
+  Menlo,
+  monospace;
+
+$font-size-xs:   0.75rem;
+$font-size-sm:   0.875rem;
+$font-size-base: 1rem;
+$font-size-lg:   1.125rem;
+$font-size-xl:   1.25rem;
+$font-size-2xl:  1.5rem;
+$font-size-3xl:  2rem;
+
+$font-weight-regular: 400;
+$font-weight-medium:  500;
+$font-weight-semibold: 600;
+$font-weight-bold:    700;
+
+$line-height-tight:  1.25;
+$line-height-normal: 1.5;
+$line-height-loose:  1.75;
+
+// --- Z-index layers ------------------------------------------------------
+$z-base:    1;
+$z-overlay: 10;
+$z-modal:   100;
+$z-toast:   1000;
+
+// --- Motion --------------------------------------------------------------
+$ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+$ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+$duration-fast:   120ms;
+$duration-base:   200ms;
+$duration-slow:   320ms;
