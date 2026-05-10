@@ -57,6 +57,7 @@
   },
   "item": {
     "toggle": "Toggle completion",
+    "drag": "Drag to reorder",
     "edit": "Edit",
     "save": "Save",
     "cancel": "Cancel",
@@ -71,7 +72,8 @@
     "loadFailed": "Failed to load todos.",
     "createFailed": "Failed to add. Please try again.",
     "updateFailed": "Failed to update. Please try again.",
-    "deleteFailed": "Failed to delete. Please try again."
+    "deleteFailed": "Failed to delete. Please try again.",
+    "reorderFailed": "Failed to reorder."
   },
   "toast": {
     "created": "Added",

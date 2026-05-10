@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import { VueDraggable } from 'vue-draggable-plus'
+import type { Todo } from '#shared/types/todo'
 import { useTodos } from '~/composables/useTodos'
 
 const { t } = useI18n()
-const { visibleTodos, isLoading, filter, error } = useTodos()
+const { visibleTodos, isLoading, filter, error, reorder } = useTodos()
 
 const emptyMessage = computed(() => {
   if (filter.value === 'active') return t('list.empty.active')
   if (filter.value === 'done') return t('list.empty.done')
   return t('list.empty.all')
 })
+
+function onReorder(newList: Todo[]) {
+  reorder(newList.map((t) => t.id))
+}
 </script>
 
 <template>
@@ -24,13 +30,24 @@ const emptyMessage = computed(() => {
       :message="emptyMessage"
     />
 
-    <TransitionGroup v-else name="todo" tag="ul" class="list__items">
+    <VueDraggable
+      v-else
+      :model-value="visibleTodos"
+      tag="ul"
+      class="list__items"
+      handle=".item__drag"
+      :animation="200"
+      ghost-class="item--ghost"
+      chosen-class="item--chosen"
+      drag-class="item--dragging"
+      @update:model-value="onReorder"
+    >
       <TodoItem
         v-for="todo in visibleTodos"
         :key="todo.id"
         :todo="todo"
       />
-    </TransitionGroup>
+    </VueDraggable>
   </section>
 </template>
 
@@ -58,16 +75,16 @@ const emptyMessage = computed(() => {
   }
 }
 
-.todo-move,
-.todo-enter-active,
-.todo-leave-active {
-  transition:
-    transform $duration-base $ease-out,
-    opacity $duration-base $ease-out;
+// Sortable.js 가 추가하는 클래스 — TodoItem 의 :is-deep 으로 적용해야 하지만
+// 여기선 list 가 부모니 ::v-deep 로 자식 li 에 닿게.
+:deep(.item--ghost) {
+  opacity: 0.35;
+  background: var(--color-accent-soft);
 }
-.todo-enter-from { opacity: 0; transform: translateY(-6px); }
-.todo-leave-to   { opacity: 0; transform: translateX(12px); }
-// 의도적으로 position: absolute 안 씀 — leave 동안 항목이 flow 에 남아있어야
-// 페이지 높이가 트랜지션 중에 잠깐 늘어나면서 스크롤바가 깜빡이지 않음.
-// 트레이드오프: 다른 항목들의 reflow 가 leave 끝난 후 한 번에 일어남.
+:deep(.item--chosen) {
+  background: var(--color-surface-alt);
+}
+:deep(.item--dragging) {
+  opacity: 0.95;
+}
 </style>

@@ -7,6 +7,8 @@ import type { CreateTodoInput, Priority, Todo, UpdateTodoInput } from '#shared/t
 // 서버 재시작 시 시드 데이터로 초기화됨.
 // =============================================================================
 
+const ORDER_STEP = 100
+
 const nowIso = (): string => new Date().toISOString()
 
 function seed(): Todo[] {
@@ -21,6 +23,7 @@ function seed(): Todo[] {
       category: '동아리',
       tags: ['nuxt4', 'frontend'],
       dueDate: null,
+      order: 0,
       createdAt: t,
       updatedAt: t,
     },
@@ -33,6 +36,7 @@ function seed(): Todo[] {
       category: '동아리',
       tags: ['design'],
       dueDate: null,
+      order: ORDER_STEP,
       createdAt: t,
       updatedAt: t,
     },
@@ -45,6 +49,7 @@ function seed(): Todo[] {
       category: '일상',
       tags: [],
       dueDate: null,
+      order: ORDER_STEP * 2,
       createdAt: t,
       updatedAt: t,
     },
@@ -62,9 +67,17 @@ function normalizeTags(tags: string[] | undefined): string[] {
   return Array.from(new Set(tags.map((t) => t.trim()).filter(Boolean)))
 }
 
+function minOrder(): number {
+  if (todos.length === 0) return 0
+  return Math.min(...todos.map((t) => t.order))
+}
+
 export const todoStore = {
   list(): Todo[] {
-    return [...todos]
+    return [...todos].sort((a, b) => {
+      if (a.order !== b.order) return a.order - b.order
+      return a.createdAt.localeCompare(b.createdAt)
+    })
   },
 
   get(id: string): Todo | undefined {
@@ -82,6 +95,7 @@ export const todoStore = {
       category: clamp(input.category, '').trim(),
       tags: normalizeTags(input.tags),
       dueDate: input.dueDate ?? null,
+      order: minOrder() - ORDER_STEP,  // 새 항목은 맨 위
       createdAt: t,
       updatedAt: t,
     }
@@ -112,5 +126,16 @@ export const todoStore = {
     const before = todos.length
     todos = todos.filter((t) => t.id !== id)
     return todos.length < before
+  },
+
+  // 입력 ids 의 순서대로 order 재할당. 포함 안 된 항목은 유지.
+  reorder(ids: string[]): Todo[] {
+    const t = nowIso()
+    todos = todos.map((todo) => {
+      const idx = ids.indexOf(todo.id)
+      if (idx === -1) return todo
+      return { ...todo, order: idx * ORDER_STEP, updatedAt: t }
+    })
+    return this.list()
   },
 }

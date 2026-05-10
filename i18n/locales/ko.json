@@ -57,6 +57,7 @@
   },
   "item": {
     "toggle": "완료 상태 변경",
+    "drag": "드래그해서 순서 변경",
     "edit": "수정",
     "save": "저장",
     "cancel": "취소",
@@ -71,7 +72,8 @@
     "loadFailed": "할 일을 불러오지 못했어요.",
     "createFailed": "추가에 실패했어요. 다시 시도해주세요.",
     "updateFailed": "수정에 실패했어요. 다시 시도해주세요.",
-    "deleteFailed": "삭제에 실패했어요. 다시 시도해주세요."
+    "deleteFailed": "삭제에 실패했어요. 다시 시도해주세요.",
+    "reorderFailed": "순서 변경에 실패했어요."
   },
   "toast": {
     "created": "추가했어요",

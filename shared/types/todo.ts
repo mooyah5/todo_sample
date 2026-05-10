@@ -21,6 +21,7 @@ export interface Todo {
   category: string
   tags: string[]
   dueDate: string | null   // ISO date (yyyy-mm-dd) or null
+  order: number            // 사용자 정의 정렬 순서 (작은 값이 위)
   createdAt: string        // ISO datetime
   updatedAt: string        // ISO datetime
 }

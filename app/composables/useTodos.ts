@@ -8,6 +8,7 @@ import { useTodoUiStore } from '~/stores/todoUi'
 import {
   useCreateTodoMutation,
   useDeleteTodoMutation,
+  useReorderTodosMutation,
   useTodosQuery,
   useUpdateTodoMutation,
 } from '~/composables/useTodosQuery'
@@ -17,8 +18,6 @@ import {
 // 컴포넌트는 이 훅만 쓰면 됨; 데이터 출처/에러 처리를 신경쓰지 않도록 캡슐화.
 // =============================================================================
 
-const PRIORITY_RANK = { high: 0, medium: 1, low: 2 } as const
-
 export function useTodos() {
   const { t } = useI18n()
   const toast = useToast()
@@ -27,6 +26,7 @@ export function useTodos() {
   const createMutation = useCreateTodoMutation()
   const updateMutation = useUpdateTodoMutation()
   const deleteMutation = useDeleteTodoMutation()
+  const reorderMutation = useReorderTodosMutation()
 
   const ui = useTodoUiStore()
   const { filter, selectedCategory } = storeToRefs(ui)
@@ -53,6 +53,8 @@ export function useTodos() {
     return Array.from(set).sort((a, b) => a.localeCompare(b, 'ko'))
   })
 
+  // 사용자 정렬 우선 — 드래그로 잡은 order 값에 따름.
+  // 동일 order 시 createdAt 으로 안정 정렬.
   const visibleTodos = computed<Todo[]>(() =>
     todos.value
       .filter((t) => {
@@ -63,12 +65,8 @@ export function useTodos() {
       })
       .slice()
       .sort((a, b) => {
-        if (a.status !== b.status) return a.status === 'todo' ? -1 : 1
-        if (a.priority !== b.priority) return PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority]
-        if (a.dueDate && b.dueDate) return a.dueDate.localeCompare(b.dueDate)
-        if (a.dueDate) return -1
-        if (b.dueDate) return 1
-        return b.createdAt.localeCompare(a.createdAt)
+        if (a.order !== b.order) return a.order - b.order
+        return a.createdAt.localeCompare(b.createdAt)
       }),
   )
 
@@ -103,6 +101,17 @@ export function useTodos() {
     const todo = todos.value.find((t) => t.id === id)
     if (!todo) return null
     return update(id, { status: todo.status === 'todo' ? 'done' : 'todo' })
+  }
+
+  async function reorder(ids: string[]): Promise<boolean> {
+    try {
+      await reorderMutation.mutateAsync(ids)
+      return true
+    }
+    catch {
+      toast.error(t('errors.reorderFailed'))
+      return false
+    }
   }
 
   async function remove(id: string): Promise<boolean> {
@@ -141,6 +150,7 @@ export function useTodos() {
     update,
     toggle,
     remove,
+    reorder,
     setFilter: ui.setFilter,
     setCategory: ui.setCategory,
     // SSR 친화: page 에서 await suspense() 로 초기 fetch 대기

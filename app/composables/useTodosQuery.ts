@@ -55,6 +55,9 @@ export function useCreateTodoMutation() {
       const previous = qc.getQueryData<Todo[]>(TODOS_QUERY_KEY)
       const id = tempId()
       const t = nowIso()
+      const minOrder = previous?.length
+        ? Math.min(...previous.map((todo) => todo.order))
+        : 0
       const optimistic: Todo = {
         id,
         title: input.title.trim(),
@@ -64,6 +67,7 @@ export function useCreateTodoMutation() {
         category: input.category?.trim() ?? '',
         tags: input.tags ?? [],
         dueDate: input.dueDate ?? null,
+        order: minOrder - ORDER_STEP,  // 새 항목은 맨 위에 — 서버 동작과 일치
         createdAt: t,
         updatedAt: t,
       }
@@ -130,6 +134,46 @@ export function useUpdateTodoMutation() {
           ? prev.map((t) => (t.id === updated.id ? updated : t))
           : [updated],
       )
+    },
+  })
+}
+
+// --- Reorder ------------------------------------------------------------
+interface ReorderContext {
+  previous: Todo[] | undefined
+}
+
+const ORDER_STEP = 100
+
+export function useReorderTodosMutation() {
+  const qc = useQueryClient()
+
+  return useMutation<Todo[], Error, string[], ReorderContext>({
+    mutationFn: (ids) =>
+      $fetch<Todo[]>('/api/todos/reorder', { method: 'POST', body: { ids } }),
+
+    onMutate: async (ids) => {
+      await qc.cancelQueries({ queryKey: TODOS_QUERY_KEY })
+      const previous = qc.getQueryData<Todo[]>(TODOS_QUERY_KEY)
+      qc.setQueryData<Todo[]>(TODOS_QUERY_KEY, (prev) => {
+        if (!prev) return prev
+        return prev.map((todo) => {
+          const idx = ids.indexOf(todo.id)
+          if (idx === -1) return todo
+          return { ...todo, order: idx * ORDER_STEP }
+        })
+      })
+      return { previous }
+    },
+
+    onError: (_err, _ids, context) => {
+      if (context?.previous !== undefined) {
+        qc.setQueryData(TODOS_QUERY_KEY, context.previous)
+      }
+    },
+
+    onSuccess: (todos) => {
+      qc.setQueryData(TODOS_QUERY_KEY, todos)
     },
   })
 }

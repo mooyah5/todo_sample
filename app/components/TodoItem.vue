@@ -92,6 +92,21 @@ async function onDelete() {
   >
     <!-- 보기 모드 -->
     <template v-if="!isEditing">
+      <span
+        class="item__drag"
+        :title="t('item.drag')"
+        :aria-label="t('item.drag')"
+      >
+        <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true">
+          <circle cx="5" cy="3" r="1.2" />
+          <circle cx="5" cy="8" r="1.2" />
+          <circle cx="5" cy="13" r="1.2" />
+          <circle cx="11" cy="3" r="1.2" />
+          <circle cx="11" cy="8" r="1.2" />
+          <circle cx="11" cy="13" r="1.2" />
+        </svg>
+      </span>
+
       <button
         type="button"
         class="item__check"
@@ -271,6 +286,28 @@ async function onDelete() {
     flex-direction: column;
     align-items: stretch;
     background: var(--color-surface-alt);
+  }
+
+  // --- drag handle ---
+  &__drag {
+    flex-shrink: 0;
+    @include flex-center;
+    width: 16px;
+    height: 22px;
+    margin-top: 2px;
+    color: var(--color-text-subtle);
+    cursor: grab;
+    opacity: 0.5;
+    transition: opacity $duration-fast $ease-out, color $duration-fast $ease-out;
+    user-select: none;
+    touch-action: none;
+
+    &:hover { color: var(--color-text); opacity: 1; }
+    &:active { cursor: grabbing; }
+  }
+  &:hover &__drag,
+  &:focus-within &__drag {
+    opacity: 1;
   }
 
   // --- check ---
