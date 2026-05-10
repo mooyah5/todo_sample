@@ -1,0 +1,75 @@
+{
+  "app": {
+    "title": "할 일",
+    "subtitle": "오늘 해야 할 것들을 정리하세요"
+  },
+  "header": {
+    "themeToLight": "라이트 모드로 전환",
+    "themeToDark": "다크 모드로 전환",
+    "language": "언어 변경",
+    "device": {
+      "mobile": "모바일",
+      "tablet": "태블릿",
+      "desktop": "데스크탑"
+    }
+  },
+  "filter": {
+    "all": "전체",
+    "active": "진행 중",
+    "done": "완료",
+    "category": "카테고리",
+    "categoryAll": "모든 카테고리",
+    "summary": "{active}개 진행 중 · {done}개 완료"
+  },
+  "form": {
+    "title": "새 할 일 추가",
+    "fields": {
+      "title": "제목",
+      "titlePlaceholder": "무엇을 해야 하나요?",
+      "description": "설명 (선택)",
+      "descriptionPlaceholder": "메모를 남겨두세요",
+      "category": "카테고리",
+      "categoryPlaceholder": "예: 일, 공부",
+      "tags": "태그",
+      "tagsPlaceholder": "엔터로 추가",
+      "priority": "우선순위",
+      "dueDate": "마감일"
+    },
+    "submit": "추가",
+    "submitting": "추가 중...",
+    "validation": {
+      "titleRequired": "제목을 입력해주세요"
+    }
+  },
+  "priority": {
+    "low": "낮음",
+    "medium": "보통",
+    "high": "높음"
+  },
+  "list": {
+    "loading": "불러오는 중...",
+    "empty": {
+      "all": "아직 등록된 할 일이 없어요. 위에서 추가해보세요.",
+      "active": "진행 중인 할 일이 없어요. 잠시 쉬어가도 좋아요.",
+      "done": "완료한 할 일이 아직 없어요."
+    }
+  },
+  "item": {
+    "toggle": "완료 상태 변경",
+    "edit": "수정",
+    "save": "저장",
+    "cancel": "취소",
+    "delete": "삭제",
+    "deleteConfirm": "이 할 일을 삭제할까요?",
+    "due": "마감 {date}",
+    "overdue": "지났음",
+    "today": "오늘",
+    "tomorrow": "내일"
+  },
+  "errors": {
+    "loadFailed": "할 일을 불러오지 못했어요.",
+    "createFailed": "추가에 실패했어요.",
+    "updateFailed": "수정에 실패했어요.",
+    "deleteFailed": "삭제에 실패했어요."
+  }
+}

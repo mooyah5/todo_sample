@@ -1,0 +1,75 @@
+{
+  "app": {
+    "title": "Todo",
+    "subtitle": "Capture what needs to get done today"
+  },
+  "header": {
+    "themeToLight": "Switch to light mode",
+    "themeToDark": "Switch to dark mode",
+    "language": "Change language",
+    "device": {
+      "mobile": "Mobile",
+      "tablet": "Tablet",
+      "desktop": "Desktop"
+    }
+  },
+  "filter": {
+    "all": "All",
+    "active": "Active",
+    "done": "Done",
+    "category": "Category",
+    "categoryAll": "All categories",
+    "summary": "{active} active · {done} done"
+  },
+  "form": {
+    "title": "Add a todo",
+    "fields": {
+      "title": "Title",
+      "titlePlaceholder": "What needs doing?",
+      "description": "Description (optional)",
+      "descriptionPlaceholder": "Add a note",
+      "category": "Category",
+      "categoryPlaceholder": "e.g. Work, Study",
+      "tags": "Tags",
+      "tagsPlaceholder": "Press enter to add",
+      "priority": "Priority",
+      "dueDate": "Due date"
+    },
+    "submit": "Add",
+    "submitting": "Adding...",
+    "validation": {
+      "titleRequired": "Please enter a title"
+    }
+  },
+  "priority": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High"
+  },
+  "list": {
+    "loading": "Loading...",
+    "empty": {
+      "all": "No todos yet. Add one above to get started.",
+      "active": "Nothing in progress. Take a breather.",
+      "done": "Nothing finished yet."
+    }
+  },
+  "item": {
+    "toggle": "Toggle completion",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this todo?",
+    "due": "Due {date}",
+    "overdue": "Overdue",
+    "today": "Today",
+    "tomorrow": "Tomorrow"
+  },
+  "errors": {
+    "loadFailed": "Failed to load todos.",
+    "createFailed": "Failed to add.",
+    "updateFailed": "Failed to update.",
+    "deleteFailed": "Failed to delete."
+  }
+}
