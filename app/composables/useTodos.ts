@@ -13,13 +13,16 @@ import {
 } from '~/composables/useTodosQuery'
 
 // =============================================================================
-// useTodos — 서버 상태(TanStack) + UI 상태(Pinia) 를 한 인터페이스로 결합.
-// 컴포넌트는 이 훅만 쓰면 됨; 데이터 출처를 신경쓰지 않도록 캡슐화.
+// useTodos — 서버 상태(TanStack) + UI 상태(Pinia) + 토스트 알림 결합.
+// 컴포넌트는 이 훅만 쓰면 됨; 데이터 출처/에러 처리를 신경쓰지 않도록 캡슐화.
 // =============================================================================
 
 const PRIORITY_RANK = { high: 0, medium: 1, low: 2 } as const
 
 export function useTodos() {
+  const { t } = useI18n()
+  const toast = useToast()
+
   const query = useTodosQuery()
   const createMutation = useCreateTodoMutation()
   const updateMutation = useUpdateTodoMutation()
@@ -28,6 +31,7 @@ export function useTodos() {
   const ui = useTodoUiStore()
   const { filter, selectedCategory } = storeToRefs(ui)
 
+  // --- derived state -----------------------------------------------------
   const todos = computed<Todo[]>(() => query.data.value ?? [])
   const isLoading = computed<boolean>(() => query.isPending.value)
   const isMutating = computed<boolean>(
@@ -37,11 +41,7 @@ export function useTodos() {
       || deleteMutation.isPending.value,
   )
   const error = computed<string | null>(() => {
-    const e
-      = query.error.value
-        ?? createMutation.error.value
-        ?? updateMutation.error.value
-        ?? deleteMutation.error.value
+    const e = query.error.value
     return e instanceof Error ? e.message : null
   })
 
@@ -75,12 +75,16 @@ export function useTodos() {
   const activeCount = computed(() => todos.value.filter((t) => t.status === 'todo').length)
   const doneCount = computed(() => todos.value.filter((t) => t.status === 'done').length)
 
-  // --- mutations (mutateAsync 를 try/catch 로 감싸 null/false 반환 — 호출부 단순화)
+  // --- mutations: optimistic 가 cache 를 즉시 갱신하므로 호출부는 결과만 받으면 됨
+  // 실패 시 롤백은 mutation 내부에서 처리, 여기서는 토스트만.
   async function create(input: CreateTodoInput): Promise<Todo | null> {
     try {
-      return await createMutation.mutateAsync(input)
+      const created = await createMutation.mutateAsync(input)
+      toast.success(t('toast.created'))
+      return created
     }
     catch {
+      toast.error(t('errors.createFailed'))
       return null
     }
   }
@@ -90,6 +94,7 @@ export function useTodos() {
       return await updateMutation.mutateAsync({ id, input })
     }
     catch {
+      toast.error(t('errors.updateFailed'))
       return null
     }
   }
@@ -103,16 +108,18 @@ export function useTodos() {
   async function remove(id: string): Promise<boolean> {
     try {
       await deleteMutation.mutateAsync(id)
-      // 카테고리 필터가 비게 되면 풀어줌
+      // 카테고리 필터가 비게 되면 해제
       if (
         selectedCategory.value
-        && !todos.value.some((t) => t.id !== id && t.category === selectedCategory.value)
+        && !todos.value.some((t) => t.category === selectedCategory.value)
       ) {
         ui.setCategory(null)
       }
+      toast.success(t('toast.deleted'))
       return true
     }
     catch {
+      toast.error(t('errors.deleteFailed'))
       return false
     }
   }

@@ -68,8 +68,13 @@
   },
   "errors": {
     "loadFailed": "Failed to load todos.",
-    "createFailed": "Failed to add.",
-    "updateFailed": "Failed to update.",
-    "deleteFailed": "Failed to delete."
+    "createFailed": "Failed to add. Please try again.",
+    "updateFailed": "Failed to update. Please try again.",
+    "deleteFailed": "Failed to delete. Please try again."
+  },
+  "toast": {
+    "created": "Added",
+    "updated": "Updated",
+    "deleted": "Deleted"
   }
 }

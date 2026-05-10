@@ -68,8 +68,13 @@
   },
   "errors": {
     "loadFailed": "할 일을 불러오지 못했어요.",
-    "createFailed": "추가에 실패했어요.",
-    "updateFailed": "수정에 실패했어요.",
-    "deleteFailed": "삭제에 실패했어요."
+    "createFailed": "추가에 실패했어요. 다시 시도해주세요.",
+    "updateFailed": "수정에 실패했어요. 다시 시도해주세요.",
+    "deleteFailed": "삭제에 실패했어요. 다시 시도해주세요."
+  },
+  "toast": {
+    "created": "추가했어요",
+    "updated": "수정했어요",
+    "deleted": "삭제했어요"
   }
 }

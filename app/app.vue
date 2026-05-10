@@ -14,4 +14,5 @@ useHead({
 <template>
   <NuxtRouteAnnouncer />
   <NuxtPage />
+  <ToastStack />
 </template>
