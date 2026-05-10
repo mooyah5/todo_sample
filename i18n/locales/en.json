@@ -26,12 +26,13 @@
     "fields": {
       "title": "Title",
       "titlePlaceholder": "What needs doing?",
-      "description": "Description (optional)",
-      "descriptionPlaceholder": "Add a note",
+      "description": "Note",
+      "descriptionPlaceholder": "Add a note (optional)",
       "category": "Category",
-      "categoryPlaceholder": "e.g. Work, Study",
+      "categoryPlaceholder": "Category (e.g. Work, Personal)",
       "tags": "Tags",
-      "tagsPlaceholder": "Press enter to add",
+      "tagsPlaceholder": "Type a tag, then enter (e.g. design)",
+      "tagsHint": "Keywords to group todos — enter to add",
       "priority": "Priority",
       "dueDate": "Due date"
     },

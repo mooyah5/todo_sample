@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p .claude)",
+      "Bash(npm install *)",
+      "Bash(npx nuxi *)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000/api/todos)",
+      "Bash(curl -s -o /dev/null -w \"page: HTTP %{http_code} | %{size_download} bytes\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(curl -s -X POST http://localhost:3000/api/todos -H \"Content-Type: application/json\" -d '{\"title\":\"테스트 항목\",\"priority\":\"high\",\"tags\":[\"test\"]}')",
+      "Bash(git add *)",
+      "Bash(git rm *)",
+      "Bash(git commit -m 'chore: scaffold Nuxt 4 with Pinia, i18n, device, pino modules *)",
+      "Bash(git commit -m 'feat\\(styles\\): SCSS design system — tokens, light/dark themes, typography, mixins *)",
+      "Bash(git update-ref *)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" -X POST http://localhost:3000/api/todos -H \"Content-Type: application/json\" -d '{\"title\":\"\"}')",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" -X PATCH http://localhost:3000/api/todos/nonexistent -H \"Content-Type: application/json\" -d '{\"priority\":\"omg\"}')",
+      "Bash(curl -s -o /dev/null -w \"GET / HTTP %{http_code}\\\\n\" http://localhost:3000/)"
+    ],
+    "additionalDirectories": [
+      "C:\\hanna\\code\\prography\\todo_sample"
+    ]
+  }
+}

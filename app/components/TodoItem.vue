@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PRIORITIES, type Priority, type Todo, type UpdateTodoInput } from '#shared/types/todo'
+import type { Priority, Todo, UpdateTodoInput } from '#shared/types/todo'
 import { useTodos } from '~/composables/useTodos'
 
 interface Props {
@@ -204,15 +204,10 @@ async function onDelete() {
           :placeholder="t('form.fields.categoryPlaceholder')"
           :disabled="isBusy"
         >
-        <select
+        <PrioritySelector
           v-model="edit.priority"
-          class="edit__field"
           :disabled="isBusy"
-        >
-          <option v-for="p in PRIORITIES" :key="p" :value="p">
-            {{ t(`priority.${p}`) }}
-          </option>
-        </select>
+        />
         <input
           v-model="edit.dueDate"
           type="date"

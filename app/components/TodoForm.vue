@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PRIORITIES, type CreateTodoInput, type Priority } from '#shared/types/todo'
+import type { CreateTodoInput, Priority } from '#shared/types/todo'
 import { useTodos } from '~/composables/useTodos'
 
 const { t } = useI18n()
@@ -118,31 +118,19 @@ async function submit() {
 
       <Transition name="expand">
         <div v-if="form.expanded" class="form__details">
-          <textarea
-            v-model="form.description"
-            rows="2"
-            class="form__textarea"
-            :placeholder="t('form.fields.descriptionPlaceholder')"
-            :disabled="isMutating"
-          />
           <div class="form__row">
             <input
               v-model="form.category"
               type="text"
               class="form__input"
               :placeholder="t('form.fields.categoryPlaceholder')"
+              :aria-label="t('form.fields.category')"
               :disabled="isMutating"
             >
-            <select
+            <PrioritySelector
               v-model="form.priority"
-              class="form__input"
               :disabled="isMutating"
-              :aria-label="t('form.fields.priority')"
-            >
-              <option v-for="p in PRIORITIES" :key="p" :value="p">
-                {{ t(`priority.${p}`) }}
-              </option>
-            </select>
+            />
             <input
               v-model="form.dueDate"
               type="date"
@@ -151,9 +139,22 @@ async function submit() {
               :aria-label="t('form.fields.dueDate')"
             >
           </div>
-          <TagInput
-            v-model="form.tags"
-            :placeholder="t('form.fields.tagsPlaceholder')"
+
+          <div class="form__group">
+            <span class="form__hint">{{ t('form.fields.tagsHint') }}</span>
+            <TagInput
+              v-model="form.tags"
+              :placeholder="t('form.fields.tagsPlaceholder')"
+              :disabled="isMutating"
+            />
+          </div>
+
+          <textarea
+            v-model="form.description"
+            rows="3"
+            class="form__textarea"
+            :placeholder="t('form.fields.descriptionPlaceholder')"
+            :aria-label="t('form.fields.description')"
             :disabled="isMutating"
           />
         </div>
@@ -239,6 +240,18 @@ async function submit() {
     @include from-tablet {
       grid-template-columns: repeat(3, 1fr);
     }
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+  }
+
+  &__hint {
+    font-size: $font-size-xs;
+    color: var(--color-text-subtle);
+    padding-left: $space-1;
   }
 
   &__input,
