@@ -88,7 +88,6 @@ async function onDelete() {
     :class="{
       'item--done': todo.status === 'done',
       'item--editing': isEditing,
-      'item--high': todo.priority === 'high' && todo.status === 'todo',
     }"
   >
     <!-- 보기 모드 -->
@@ -105,8 +104,8 @@ async function onDelete() {
         <svg
           v-if="todo.status === 'done'"
           viewBox="0 0 16 16"
-          width="12"
-          height="12"
+          width="10"
+          height="10"
           fill="none"
           stroke="currentColor"
           stroke-width="2.5"
@@ -119,8 +118,8 @@ async function onDelete() {
 
       <div class="item__body">
         <div class="item__head">
-          <h3 class="item__title">{{ todo.title }}</h3>
-          <PriorityBadge :priority="todo.priority" size="sm" />
+          <PriorityBadge :priority="todo.priority" />
+          <span class="item__title">{{ todo.title }}</span>
         </div>
 
         <p v-if="todo.description" class="item__description">
@@ -158,7 +157,7 @@ async function onDelete() {
           :disabled="isBusy"
           @click="enterEdit"
         >
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 20h9" />
             <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
           </svg>
@@ -171,7 +170,7 @@ async function onDelete() {
           :disabled="isBusy"
           @click="onDelete"
         >
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="3 6 5 6 21 6" />
             <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
             <path d="M10 11v6M14 11v6" />
@@ -193,7 +192,7 @@ async function onDelete() {
       <textarea
         v-model="edit.description"
         rows="2"
-        class="edit__textarea"
+        class="edit__field"
         :placeholder="t('form.fields.descriptionPlaceholder')"
         :disabled="isBusy"
       />
@@ -201,13 +200,13 @@ async function onDelete() {
         <input
           v-model="edit.category"
           type="text"
-          class="edit__input"
+          class="edit__field"
           :placeholder="t('form.fields.categoryPlaceholder')"
           :disabled="isBusy"
         >
         <select
           v-model="edit.priority"
-          class="edit__input"
+          class="edit__field"
           :disabled="isBusy"
         >
           <option v-for="p in PRIORITIES" :key="p" :value="p">
@@ -217,7 +216,7 @@ async function onDelete() {
         <input
           v-model="edit.dueDate"
           type="date"
-          class="edit__input"
+          class="edit__field"
           :disabled="isBusy"
         >
       </div>
@@ -253,65 +252,49 @@ async function onDelete() {
   display: flex;
   align-items: flex-start;
   gap: $space-3;
-  padding: $space-4;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: $radius-lg;
-  box-shadow: var(--shadow-sm);
-  transition:
-    transform $duration-fast $ease-out,
-    box-shadow $duration-base $ease-out,
-    border-color $duration-base $ease-out;
+  padding: $space-3 $space-2;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color $duration-fast $ease-out;
 
   &:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--color-border-strong);
-  }
-
-  &--done {
     background: var(--color-surface-alt);
-    .item__title { color: var(--color-text-muted); text-decoration: line-through; }
-    .item__description { opacity: 0.7; }
+  }
+  &:hover &__actions {
+    opacity: 1;
   }
 
-  &--high::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: $space-4;
-    bottom: $space-4;
-    width: 3px;
-    background: var(--color-priority-high);
-    border-radius: $radius-pill;
+  &--done &__title {
+    color: var(--color-text-subtle);
+    text-decoration: line-through;
+    text-decoration-color: var(--color-text-subtle);
+  }
+  &--done &__description {
+    opacity: 0.5;
   }
 
   &--editing {
     flex-direction: column;
     align-items: stretch;
-    border-color: var(--color-accent);
+    background: var(--color-surface-alt);
   }
 
   // --- check ---
   &__check {
     flex-shrink: 0;
-    width: 22px;
-    height: 22px;
-    margin-top: 2px;
-    border: 2px solid var(--color-border-strong);
+    width: 18px;
+    height: 18px;
+    margin-top: 3px;
+    border: 1.5px solid var(--color-border-strong);
     border-radius: 50%;
-    background: var(--color-surface);
+    background: transparent;
     color: var(--color-text-on-accent);
     @include flex-center;
-    transition:
-      background-color $duration-base $ease-out,
-      border-color $duration-base $ease-out;
+    transition: all $duration-base $ease-out;
 
-    &:hover {
-      border-color: var(--color-accent);
-    }
+    &:hover { border-color: var(--color-text); }
     &--done {
-      background: var(--color-accent);
-      border-color: var(--color-accent);
+      background: var(--color-text);
+      border-color: var(--color-text);
     }
   }
 
@@ -321,22 +304,21 @@ async function onDelete() {
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: $space-2;
+    gap: $space-1;
   }
 
   &__head {
     display: flex;
     align-items: center;
     gap: $space-2;
-    flex-wrap: wrap;
+    min-width: 0;
   }
 
   &__title {
-    margin: 0;
-    font-size: $font-size-base;
-    font-weight: $font-weight-semibold;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
     color: var(--color-text);
-    line-height: $line-height-tight;
+    line-height: $line-height-normal;
     word-break: break-word;
   }
 
@@ -355,69 +337,65 @@ async function onDelete() {
     flex-wrap: wrap;
     gap: $space-2;
     font-size: $font-size-xs;
+    color: var(--color-text-subtle);
+    margin-top: $space-1;
   }
 
   &__category {
-    padding: 2px $space-2;
-    background: var(--color-accent-soft);
-    color: var(--color-accent);
-    border-radius: $radius-sm;
-    font-weight: $font-weight-medium;
+    color: var(--color-text-muted);
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      margin-right: 6px;
+      border-radius: 50%;
+      background: var(--color-text-subtle);
+      vertical-align: middle;
+    }
   }
 
   &__tag {
     color: var(--color-text-subtle);
-    font-weight: $font-weight-medium;
   }
 
   &__due {
     margin-left: auto;
-    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
 
-    &--today {
-      color: var(--color-info);
-      font-weight: $font-weight-semibold;
-    }
-    &--overdue {
-      color: var(--color-danger);
-      font-weight: $font-weight-semibold;
-    }
+    &--today { color: var(--color-info); }
+    &--overdue { color: var(--color-danger); }
   }
 
   // --- actions ---
   &__actions {
     display: flex;
-    gap: $space-1;
+    gap: 0;
     flex-shrink: 0;
-    opacity: 0.5;
-    transition: opacity $duration-base $ease-out;
+    opacity: 0;
+    transition: opacity $duration-fast $ease-out;
   }
-  &:hover &__actions,
-  &:focus-within &__actions {
-    opacity: 1;
-  }
+  &:focus-within &__actions { opacity: 1; }
 
   &__action {
     @include flex-center;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border: 0;
     background: transparent;
-    color: var(--color-text-muted);
+    color: var(--color-text-subtle);
     border-radius: $radius-sm;
-    transition:
-      background-color $duration-base $ease-out,
-      color $duration-base $ease-out;
+    transition: background-color $duration-base $ease-out, color $duration-base $ease-out;
 
     &:hover:not(:disabled) {
       background: var(--color-surface-hover);
       color: var(--color-text);
     }
     &--danger:hover:not(:disabled) {
-      background: color-mix(in srgb, var(--color-danger) 12%, transparent);
       color: var(--color-danger);
     }
-    &:disabled { opacity: 0.5; }
+    &:disabled { opacity: 0.4; }
   }
 }
 
@@ -425,35 +403,39 @@ async function onDelete() {
 .edit {
   display: flex;
   flex-direction: column;
-  gap: $space-3;
+  gap: $space-2;
   width: 100%;
 
   &__title {
-    height: 40px;
+    height: 36px;
     padding: 0 $space-3;
     border: 1px solid var(--color-border);
-    border-radius: $radius-md;
-    background: var(--color-surface-alt);
-    color: var(--color-text);
-    font-size: $font-size-base;
-    font-weight: $font-weight-medium;
-    outline: none;
-
-    &:focus { border-color: var(--color-accent); }
-  }
-
-  &__textarea {
-    padding: $space-2 $space-3;
-    border: 1px solid var(--color-border);
-    border-radius: $radius-md;
-    background: var(--color-surface-alt);
+    border-radius: $radius-sm;
+    background: var(--color-surface);
     color: var(--color-text);
     font-size: $font-size-sm;
-    line-height: $line-height-normal;
-    resize: vertical;
+    font-weight: $font-weight-medium;
+    outline: none;
+    &:focus { border-color: var(--color-border-strong); }
+  }
+
+  &__field {
+    height: 32px;
+    padding: 0 $space-3;
+    border: 1px solid var(--color-border);
+    border-radius: $radius-sm;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: $font-size-sm;
     outline: none;
 
-    &:focus { border-color: var(--color-accent); }
+    &:focus { border-color: var(--color-border-strong); }
+  }
+  textarea.edit__field {
+    height: auto;
+    padding: $space-2 $space-3;
+    resize: vertical;
+    line-height: $line-height-normal;
   }
 
   &__row {
@@ -466,31 +448,20 @@ async function onDelete() {
     }
   }
 
-  &__input {
-    height: 36px;
-    padding: 0 $space-3;
-    border: 1px solid var(--color-border);
-    border-radius: $radius-md;
-    background: var(--color-surface-alt);
-    color: var(--color-text);
-    font-size: $font-size-sm;
-    outline: none;
-    &:focus { border-color: var(--color-accent); }
-  }
-
   &__actions {
     display: flex;
     justify-content: flex-end;
     gap: $space-2;
+    margin-top: $space-1;
   }
 
   &__btn {
-    height: 36px;
-    padding: 0 $space-4;
+    height: 32px;
+    padding: 0 $space-3;
     border: 0;
-    border-radius: $radius-md;
+    border-radius: $radius-sm;
     font-size: $font-size-sm;
-    font-weight: $font-weight-semibold;
+    font-weight: $font-weight-medium;
     transition: background-color $duration-base $ease-out;
 
     &--ghost {
@@ -506,7 +477,7 @@ async function onDelete() {
       color: var(--color-text-on-accent);
       &:hover:not(:disabled) { background: var(--color-accent-hover); }
     }
-    &:disabled { opacity: 0.6; cursor: not-allowed; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
   }
 }
 </style>

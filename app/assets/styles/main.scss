@@ -16,6 +16,11 @@ html, body {
   padding: 0;
 }
 
+html {
+  // 콘텐츠가 짧을 때도 스크롤바 자리를 비워둬 레이아웃 점프 방지
+  scrollbar-gutter: stable;
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-text);

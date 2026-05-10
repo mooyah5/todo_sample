@@ -4,7 +4,6 @@ import { useTodos } from '~/composables/useTodos'
 const { t } = useI18n()
 const { suspense } = useTodos()
 
-// SSR 시점에 초기 fetch 대기 — TanStack Query 의 hydrate 로 클라이언트에 그대로 이관됨
 await suspense()
 
 useHead({ title: () => t('app.title') })
@@ -28,18 +27,19 @@ useHead({ title: () => t('app.title') })
   min-height: 100vh;
 
   &__inner {
-    max-width: 720px;
+    max-width: 640px;
     margin: 0 auto;
-    padding: $space-4;
+    padding: $space-3 $space-4;
 
     @include from-tablet {
-      padding: $space-6;
+      padding: $space-5 $space-6;
     }
   }
 
   &__main {
-    display: grid;
-    gap: $space-5;
+    display: flex;
+    flex-direction: column;
+    gap: $space-6;
   }
 }
 </style>

@@ -69,7 +69,7 @@ async function submit() {
 <template>
   <section class="form" :aria-label="t('form.title')">
     <form @submit.prevent="submit">
-      <div class="form__row form__row--main">
+      <div class="form__main">
         <input
           ref="titleInput"
           v-model="form.title"
@@ -84,18 +84,18 @@ async function submit() {
         >
         <button
           type="button"
-          class="form__expand"
+          class="form__btn form__btn--ghost"
           :aria-expanded="form.expanded"
           :aria-label="form.expanded ? '간단히' : '자세히'"
           @click="form.expanded = !form.expanded"
         >
           <svg
             viewBox="0 0 24 24"
-            width="16"
-            height="16"
+            width="14"
+            height="14"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
+            stroke-width="1.75"
             stroke-linecap="round"
             stroke-linejoin="round"
             :style="{ transform: form.expanded ? 'rotate(180deg)' : '' }"
@@ -105,7 +105,7 @@ async function submit() {
         </button>
         <button
           type="submit"
-          class="form__submit"
+          class="form__btn form__btn--primary"
           :disabled="isMutating"
         >
           {{ isMutating ? t('form.submitting') : t('form.submit') }}
@@ -118,61 +118,44 @@ async function submit() {
 
       <Transition name="expand">
         <div v-if="form.expanded" class="form__details">
+          <textarea
+            v-model="form.description"
+            rows="2"
+            class="form__textarea"
+            :placeholder="t('form.fields.descriptionPlaceholder')"
+            :disabled="isMutating"
+          />
           <div class="form__row">
-            <label class="form__field">
-              <span class="form__label">{{ t('form.fields.description') }}</span>
-              <textarea
-                v-model="form.description"
-                rows="2"
-                class="form__textarea"
-                :placeholder="t('form.fields.descriptionPlaceholder')"
-                :disabled="isMutating"
-              />
-            </label>
+            <input
+              v-model="form.category"
+              type="text"
+              class="form__input"
+              :placeholder="t('form.fields.categoryPlaceholder')"
+              :disabled="isMutating"
+            >
+            <select
+              v-model="form.priority"
+              class="form__input"
+              :disabled="isMutating"
+              :aria-label="t('form.fields.priority')"
+            >
+              <option v-for="p in PRIORITIES" :key="p" :value="p">
+                {{ t(`priority.${p}`) }}
+              </option>
+            </select>
+            <input
+              v-model="form.dueDate"
+              type="date"
+              class="form__input"
+              :disabled="isMutating"
+              :aria-label="t('form.fields.dueDate')"
+            >
           </div>
-          <div class="form__row form__row--grid">
-            <label class="form__field">
-              <span class="form__label">{{ t('form.fields.category') }}</span>
-              <input
-                v-model="form.category"
-                type="text"
-                class="form__input"
-                :placeholder="t('form.fields.categoryPlaceholder')"
-                :disabled="isMutating"
-              >
-            </label>
-            <label class="form__field">
-              <span class="form__label">{{ t('form.fields.priority') }}</span>
-              <select
-                v-model="form.priority"
-                class="form__select"
-                :disabled="isMutating"
-              >
-                <option v-for="p in PRIORITIES" :key="p" :value="p">
-                  {{ t(`priority.${p}`) }}
-                </option>
-              </select>
-            </label>
-            <label class="form__field">
-              <span class="form__label">{{ t('form.fields.dueDate') }}</span>
-              <input
-                v-model="form.dueDate"
-                type="date"
-                class="form__input"
-                :disabled="isMutating"
-              >
-            </label>
-          </div>
-          <div class="form__row">
-            <div class="form__field">
-              <span class="form__label">{{ t('form.fields.tags') }}</span>
-              <TagInput
-                v-model="form.tags"
-                :placeholder="t('form.fields.tagsPlaceholder')"
-                :disabled="isMutating"
-              />
-            </div>
-          </div>
+          <TagInput
+            v-model="form.tags"
+            :placeholder="t('form.fields.tagsPlaceholder')"
+            :disabled="isMutating"
+          />
         </div>
       </Transition>
     </form>
@@ -181,101 +164,56 @@ async function submit() {
 
 <style lang="scss" scoped>
 .form {
-  @include surface;
-  padding: $space-4;
-
-  @include from-tablet {
-    padding: $space-5;
-  }
-
-  &__row {
+  &__main {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     gap: $space-2;
-
-    & + & {
-      margin-top: $space-3;
-    }
-
-    &--main {
-      flex-wrap: wrap;
-    }
-
-    &--grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: $space-3;
-
-      @include from-tablet {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
   }
 
   &__title {
-    flex: 1 1 0;
+    flex: 1;
     min-width: 0;
-    height: 44px;
-    padding: 0 $space-4;
-    border: 1px solid var(--color-border);
-    border-radius: $radius-md;
-    background: var(--color-surface-alt);
-    font-size: $font-size-base;
-    font-weight: $font-weight-medium;
-    color: var(--color-text);
-    outline: none;
-    transition: border-color $duration-base $ease-out, background-color $duration-base $ease-out;
-
-    &::placeholder {
-      color: var(--color-text-subtle);
-    }
-    &:focus {
-      border-color: var(--color-accent);
-      background: var(--color-surface);
-    }
-    &--error {
-      border-color: var(--color-danger);
-    }
-  }
-
-  &__expand {
-    @include flex-center;
-    width: 44px;
-    height: 44px;
-    border: 1px solid var(--color-border);
-    border-radius: $radius-md;
-    background: var(--color-surface);
-    color: var(--color-text-muted);
-    transition: background-color $duration-base $ease-out;
-
-    svg {
-      transition: transform $duration-base $ease-out;
-    }
-    &:hover {
-      background: var(--color-surface-hover);
-      color: var(--color-text);
-    }
-  }
-
-  &__submit {
-    height: 44px;
-    padding: 0 $space-5;
+    height: 38px;
+    padding: 0 $space-3;
     border: 0;
-    border-radius: $radius-md;
-    background: var(--color-accent);
-    color: var(--color-text-on-accent);
-    font-weight: $font-weight-semibold;
-    transition: background-color $duration-base $ease-out, transform $duration-fast $ease-out;
+    border-bottom: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-text);
+    font-size: $font-size-base;
+    outline: none;
+    transition: border-color $duration-base $ease-out;
 
-    &:hover:not(:disabled) {
-      background: var(--color-accent-hover);
+    &::placeholder { color: var(--color-text-subtle); }
+    &:focus { border-bottom-color: var(--color-text); }
+    &--error { border-bottom-color: var(--color-danger); }
+  }
+
+  &__btn {
+    @include flex-center;
+    height: 32px;
+    padding: 0 $space-3;
+    border: 0;
+    border-radius: $radius-sm;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    transition: background-color $duration-base $ease-out, color $duration-base $ease-out;
+
+    &--ghost {
+      background: transparent;
+      color: var(--color-text-subtle);
+      width: 32px;
+      padding: 0;
+      svg { transition: transform $duration-base $ease-out; }
+
+      &:hover { background: var(--color-surface-hover); color: var(--color-text); }
     }
-    &:active:not(:disabled) {
-      transform: scale(0.97);
-    }
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+
+    &--primary {
+      background: var(--color-accent);
+      color: var(--color-text-on-accent);
+
+      &:hover:not(:disabled) { background: var(--color-accent-hover); }
+      &:disabled { opacity: 0.5; cursor: not-allowed; }
     }
   }
 
@@ -286,42 +224,38 @@ async function submit() {
   }
 
   &__details {
-    margin-top: $space-3;
-    padding-top: $space-3;
-    border-top: 1px dashed var(--color-border);
+    margin-top: $space-4;
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
     overflow: hidden;
   }
 
-  &__field {
-    display: flex;
-    flex-direction: column;
-    gap: $space-1;
-    flex: 1;
-  }
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-2;
 
-  &__label {
-    font-size: $font-size-xs;
-    color: var(--color-text-muted);
-    font-weight: $font-weight-medium;
+    @include from-tablet {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   &__input,
-  &__select,
   &__textarea {
-    height: 40px;
+    height: 36px;
     padding: 0 $space-3;
     border: 1px solid var(--color-border);
-    border-radius: $radius-md;
-    background: var(--color-surface);
+    border-radius: $radius-sm;
+    background: transparent;
     color: var(--color-text);
     font-size: $font-size-sm;
     outline: none;
     transition: border-color $duration-base $ease-out;
 
-    &:focus {
-      border-color: var(--color-accent);
-    }
+    &:focus { border-color: var(--color-border-strong); }
   }
+
   &__textarea {
     height: auto;
     padding: $space-2 $space-3;
@@ -334,16 +268,14 @@ async function submit() {
 .expand-leave-active {
   transition:
     max-height $duration-slow $ease-in-out,
-    opacity $duration-base $ease-out;
+    opacity $duration-base $ease-out,
+    margin-top $duration-base $ease-out;
   max-height: 600px;
-  overflow: hidden;
 }
 .expand-enter-from,
 .expand-leave-to {
   max-height: 0;
   opacity: 0;
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-  border-top-color: transparent !important;
+  margin-top: 0;
 }
 </style>

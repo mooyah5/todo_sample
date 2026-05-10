@@ -26,37 +26,28 @@ async function handleSwitch() {
     :aria-label="t('header.language')"
     @click="handleSwitch"
   >
-    <span class="lang-toggle__code">{{ locale.toUpperCase() }}</span>
+    {{ locale.toUpperCase() }}
   </button>
 </template>
 
 <style lang="scss" scoped>
 .lang-toggle {
   @include flex-center;
-  height: 40px;
+  height: 32px;
   padding: 0 $space-3;
-  border: 1px solid var(--color-border);
-  border-radius: $radius-md;
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
+  border: 0;
+  border-radius: $radius-sm;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-family: $font-family-mono;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
   letter-spacing: 0.04em;
-  transition:
-    background-color $duration-base $ease-out,
-    border-color $duration-base $ease-out,
-    transform $duration-fast $ease-out;
+  transition: background-color $duration-base $ease-out, color $duration-base $ease-out;
 
   &:hover {
     background: var(--color-surface-hover);
-    border-color: var(--color-border-strong);
-  }
-  &:active {
-    transform: scale(0.96);
-  }
-
-  &__code {
-    font-family: $font-family-mono;
+    color: var(--color-text);
   }
 }
 </style>

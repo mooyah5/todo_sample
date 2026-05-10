@@ -38,10 +38,8 @@ const emptyMessage = computed(() => {
 .list {
   &__error {
     margin: 0 0 $space-3;
-    padding: $space-3 $space-4;
-    background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+    padding: $space-2 $space-3;
     color: var(--color-danger);
-    border-radius: $radius-md;
     font-size: $font-size-sm;
   }
 
@@ -56,9 +54,7 @@ const emptyMessage = computed(() => {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: $space-3;
+    border-top: 1px solid var(--color-border);
   }
 }
 
@@ -69,16 +65,9 @@ const emptyMessage = computed(() => {
     transform $duration-base $ease-out,
     opacity $duration-base $ease-out;
 }
-.todo-enter-from {
-  opacity: 0;
-  transform: translateY(-8px);
-}
-.todo-leave-to {
-  opacity: 0;
-  transform: translateX(20px);
-}
-.todo-leave-active {
-  position: absolute;
-  width: 100%;
-}
+.todo-enter-from { opacity: 0; transform: translateY(-6px); }
+.todo-leave-to   { opacity: 0; transform: translateX(12px); }
+// 의도적으로 position: absolute 안 씀 — leave 동안 항목이 flow 에 남아있어야
+// 페이지 높이가 트랜지션 중에 잠깐 늘어나면서 스크롤바가 깜빡이지 않음.
+// 트레이드오프: 다른 항목들의 reflow 가 leave 끝난 후 한 번에 일어남.
 </style>

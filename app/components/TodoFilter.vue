@@ -60,45 +60,31 @@ const currentCategory = computed<string>(() => selectedCategory.value ?? '')
 <style lang="scss" scoped>
 .filter {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: $space-3;
-
-  @include from-tablet {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
+  flex-wrap: wrap;
 
   &__tabs {
     display: inline-flex;
-    padding: 4px;
-    background: var(--color-surface-alt);
-    border: 1px solid var(--color-border);
-    border-radius: $radius-md;
-    gap: 2px;
+    gap: $space-1;
   }
 
   &__tab {
-    flex: 1;
-    height: 32px;
-    padding: 0 $space-4;
+    height: 28px;
+    padding: 0 $space-3;
     border: 0;
     background: transparent;
-    color: var(--color-text-muted);
+    color: var(--color-text-subtle);
     font-size: $font-size-sm;
     font-weight: $font-weight-medium;
     border-radius: $radius-sm;
-    transition:
-      background-color $duration-base $ease-out,
-      color $duration-base $ease-out;
+    transition: background-color $duration-base $ease-out, color $duration-base $ease-out;
 
-    &:hover {
-      color: var(--color-text);
-    }
+    &:hover { color: var(--color-text); }
     &--active {
-      background: var(--color-surface);
       color: var(--color-text);
-      box-shadow: var(--shadow-sm);
+      background: var(--color-surface-alt);
     }
   }
 
@@ -106,27 +92,28 @@ const currentCategory = computed<string>(() => selectedCategory.value ?? '')
     display: flex;
     align-items: center;
     gap: $space-3;
-    justify-content: space-between;
+    margin-left: auto;
   }
 
   &__select {
-    height: 32px;
-    padding: 0 $space-3;
-    border: 1px solid var(--color-border);
-    border-radius: $radius-sm;
-    background: var(--color-surface);
-    color: var(--color-text);
+    height: 28px;
+    padding: 0 $space-2;
+    border: 0;
+    background: transparent;
+    color: var(--color-text-muted);
     font-size: $font-size-sm;
     outline: none;
+    border-radius: $radius-sm;
+    cursor: pointer;
 
-    &:focus {
-      border-color: var(--color-accent);
-    }
+    &:hover { background: var(--color-surface-hover); color: var(--color-text); }
+    &:focus { background: var(--color-surface-alt); }
   }
 
   &__summary {
-    color: var(--color-text-muted);
+    color: var(--color-text-subtle);
     font-size: $font-size-xs;
+    font-variant-numeric: tabular-nums;
   }
 }
 </style>

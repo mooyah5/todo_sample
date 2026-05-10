@@ -46,10 +46,10 @@ function onKeydown(e: KeyboardEvent) {
   <div class="tag-input" :class="{ 'tag-input--disabled': disabled }">
     <TransitionGroup name="tag" tag="ul" class="tag-input__list">
       <li v-for="tag in modelValue" :key="tag" class="tag-input__chip">
-        <span class="tag-input__chip-label">#{{ tag }}</span>
+        <span>#{{ tag }}</span>
         <button
           type="button"
-          class="tag-input__chip-remove"
+          class="tag-input__remove"
           :disabled="disabled"
           :aria-label="`Remove ${tag}`"
           @click="remove(tag)"
@@ -74,20 +74,14 @@ function onKeydown(e: KeyboardEvent) {
   flex-wrap: wrap;
   align-items: center;
   gap: $space-2;
-  padding: $space-2 $space-3;
+  min-height: 36px;
+  padding: $space-1 $space-2;
   border: 1px solid var(--color-border);
-  border-radius: $radius-md;
+  border-radius: $radius-sm;
   background: var(--color-surface);
-  transition: border-color $duration-base $ease-out;
 
-  &:focus-within {
-    border-color: var(--color-accent);
-  }
-
-  &--disabled {
-    opacity: 0.6;
-    pointer-events: none;
-  }
+  &:focus-within { border-color: var(--color-border-strong); }
+  &--disabled { opacity: 0.6; pointer-events: none; }
 
   &__list {
     display: contents;
@@ -99,61 +93,46 @@ function onKeydown(e: KeyboardEvent) {
   &__chip {
     display: inline-flex;
     align-items: center;
-    gap: $space-1;
+    gap: 2px;
     padding: 2px $space-2;
-    background: var(--color-accent-soft);
-    color: var(--color-accent);
+    color: var(--color-text-muted);
     font-size: $font-size-xs;
-    font-weight: $font-weight-medium;
-    border-radius: $radius-pill;
+    border-radius: $radius-sm;
+    background: var(--color-surface-alt);
   }
 
-  &__chip-remove {
+  &__remove {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     background: transparent;
     border: 0;
-    color: inherit;
+    color: var(--color-text-subtle);
     font-size: 14px;
     line-height: 1;
     border-radius: 50%;
-    transition: background-color $duration-fast $ease-out;
 
-    &:hover {
-      background: color-mix(in srgb, currentColor 20%, transparent);
-    }
+    &:hover { color: var(--color-text); }
   }
 
   &__field {
     flex: 1;
-    min-width: 120px;
+    min-width: 100px;
     border: 0;
     background: transparent;
-    padding: $space-1 0;
+    padding: 0 $space-1;
     font-size: $font-size-sm;
     outline: none;
+    color: var(--color-text);
 
-    &::placeholder {
-      color: var(--color-text-subtle);
-    }
+    &::placeholder { color: var(--color-text-subtle); }
   }
 }
 
 .tag-enter-active,
-.tag-leave-active {
-  transition:
-    opacity $duration-fast $ease-out,
-    transform $duration-fast $ease-out;
-}
-.tag-enter-from {
-  opacity: 0;
-  transform: scale(0.8);
-}
-.tag-leave-to {
-  opacity: 0;
-  transform: scale(0.8);
-}
+.tag-leave-active { transition: opacity $duration-fast $ease-out, transform $duration-fast $ease-out; }
+.tag-enter-from,
+.tag-leave-to { opacity: 0; transform: scale(0.9); }
 </style>

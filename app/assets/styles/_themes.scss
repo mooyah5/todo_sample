@@ -1,76 +1,76 @@
 // =============================================================================
 // Theme: light / dark CSS variables
-// data-theme 속성으로 토글 — `useTheme` composable 이 <html> 에 attr 부여
+// 미니멀 — 중립색 위주, 컬러는 액센트와 시맨틱 알림에만 절제해서 사용
 // =============================================================================
 
 :root,
 [data-theme='light'] {
-  // surface
-  --color-bg:           #f7f8fa;
+  // surface — 거의 평면, 거의 흰색
+  --color-bg:           #ffffff;
   --color-surface:      #ffffff;
-  --color-surface-alt:  #f1f3f6;
-  --color-surface-hover: #eef0f4;
-  --color-border:       #e2e5ea;
-  --color-border-strong: #c8cdd4;
+  --color-surface-alt:  #f7f7f8;
+  --color-surface-hover: #f2f2f4;
+  --color-border:       #ececef;
+  --color-border-strong: #d8d8dd;
 
   // text
-  --color-text:         #14181f;
-  --color-text-muted:   #5b6472;
-  --color-text-subtle:  #8a93a1;
+  --color-text:         #18181b;
+  --color-text-muted:   #6c6e75;
+  --color-text-subtle:  #9a9ba1;
   --color-text-on-accent: #ffffff;
 
-  // brand
-  --color-accent:       #4f46e5;
-  --color-accent-hover: #4338ca;
-  --color-accent-soft:  #eef2ff;
+  // accent — 회색조 가까운 잉크 블루, 한 톤만
+  --color-accent:       #2d3142;
+  --color-accent-hover: #1c1f2c;
+  --color-accent-soft:  #f0f1f5;
 
-  // semantic
-  --color-success:      #10b981;
-  --color-warning:      #f59e0b;
-  --color-danger:       #ef4444;
-  --color-info:         #3b82f6;
+  // semantic — 채도 낮춘 알림 색
+  --color-success:      #2f9e6b;
+  --color-warning:      #c98a2e;
+  --color-danger:       #d04444;
+  --color-info:         #4773c4;
 
-  // priority
-  --color-priority-low:    #94a3b8;
-  --color-priority-medium: #f59e0b;
-  --color-priority-high:   #ef4444;
+  // priority — 단색 점만 사용
+  --color-priority-low:    #c7c8cc;
+  --color-priority-medium: #c98a2e;
+  --color-priority-high:   #d04444;
 
-  // shadows
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+  // shadows — 거의 안 씀
+  --shadow-sm: none;
+  --shadow-md: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.08);
 
   color-scheme: light;
 }
 
 [data-theme='dark'] {
-  --color-bg:           #0b0e14;
-  --color-surface:      #141925;
-  --color-surface-alt:  #1b2230;
-  --color-surface-hover: #232b3b;
-  --color-border:       #2a3245;
-  --color-border-strong: #3a4359;
+  --color-bg:           #0f1013;
+  --color-surface:      #0f1013;
+  --color-surface-alt:  #16181d;
+  --color-surface-hover: #1c1f25;
+  --color-border:       #23262d;
+  --color-border-strong: #353941;
 
-  --color-text:         #e7eaf0;
-  --color-text-muted:   #a3acba;
-  --color-text-subtle:  #6c7689;
-  --color-text-on-accent: #ffffff;
+  --color-text:         #e7e8ea;
+  --color-text-muted:   #9b9da4;
+  --color-text-subtle:  #65686f;
+  --color-text-on-accent: #0f1013;
 
-  --color-accent:       #818cf8;
-  --color-accent-hover: #a5b4fc;
-  --color-accent-soft:  #1e1f3d;
+  --color-accent:       #e7e8ea;
+  --color-accent-hover: #ffffff;
+  --color-accent-soft:  #1c1f25;
 
-  --color-success:      #34d399;
-  --color-warning:      #fbbf24;
-  --color-danger:       #f87171;
-  --color-info:         #60a5fa;
+  --color-success:      #4ab586;
+  --color-warning:      #d6a14a;
+  --color-danger:       #e26464;
+  --color-info:         #6a8fd6;
 
-  --color-priority-low:    #64748b;
-  --color-priority-medium: #fbbf24;
-  --color-priority-high:   #f87171;
+  --color-priority-low:    #4a4d54;
+  --color-priority-medium: #d6a14a;
+  --color-priority-high:   #e26464;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.4);
+  --shadow-sm: none;
+  --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
 
   color-scheme: dark;
